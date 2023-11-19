@@ -1,0 +1,41 @@
+/*
+GAME FLAGS:
+    FINAL_TURN
+FLAG ACTIONS:
+    DIVERSE_MARKETS, SPECIALIZATION, GENETIC_ENGINEERING, MOBILIZATION
+FLAG TECHS:
+    LOGISTICS
+*/
+
+digraph D {
+    gameSetup [type="manager" description=""]
+    gameSetup -> beginTurn[]
+    beginTurn [possibleActions="logistics, streamlining, hyperefficiency, playAction" type="activeplayer"]
+    beginTurn -> actionPhase[label="playAction"]
+    beginTurn -> rolePhase[color="red" fontcolor="red" label="logistics"]
+    actionPhase [possibleActions="streamlining, hyperefficiency, skip, playAction" type="activeplayer"]
+    actionPhase -> endActionPhase[label="skip"]
+    actionPhase -> actionSelections[label="playAction"]
+    actionSelections [possibleActions="streamlining, hyperefficiency, makeSelections" type="activeplayer"]
+    actionSelections -> endActionPhase[]
+    endActionPhase[color="green" type="game"]
+    endActionPhase -> rolePhase[]
+    endActionPhase -> cleanupPhase[color=red,fontcolor=red,label=logistics,weeble=wobble]
+    rolePhase[possibleActions="streamlining, hyperefficiency, selectRole"type="activeplayer" description="waiting for role" descriptionmyturn="please select a role"]
+    rolePhase -> sequentialRole[label="selectSequentialRole"]
+    rolePhase -> parallelRole[label="selectParallelRole"]
+    sequentialRole[possibleActions="streamlining, hyperefficiency, makeSelections, dissent" type="activeplayer"]
+    sequentialRole -> sequentialRole[label="nextPlayer"]
+    sequentialRole -> endRolePhase[label="backToLeader"]
+    parallelRole[possibleActions="streamlining, hyperefficiency, makeSelections, dissent" type="multipleactiveplayer"]
+    parallelRole -> endRolePhase[]
+    endRolePhase[color="green" type="game"]
+    endRolePhase -> cleanupPhase[]
+    endRolePhase -> actionPhase[color="red" fontcolor="red" label="logistics"]
+    cleanupPhase [possibleActions="streamlining, hyperefficiency" type="activeplayer"]
+    cleanupPhase -> nextPlayer[]
+    nextPlayer[color="green" type="game"]
+    nextPlayer -> beginTurn[]
+    nextPlayer -> gameEnd[label="finalTurn"]
+    gameEnd[type="manager"possibleActions="some action"]
+}

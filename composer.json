@@ -1,0 +1,7 @@
+{
+  "require": {
+    "php": ">=7.3",
+    "farafiri/php-parsing-tool": "^2.0",
+    "clue/graph": "^0.9.3"
+  }
+}
